@@ -1,0 +1,105 @@
+class MazeGame:
+   # Main class that controls the maze and player movement
+   def __init__(self):
+       # Create the maze layout
+       self.maze = [
+           ['#', '#', '#', '#', '#', '#', '#'],
+           ['#', '.', '.', '#', '.', '.', '#'],
+           ['#', '.', '#', '#', '.', '#', '#'],
+           ['#', '.', '.', '.', '.', '.', '#'],
+           ['#', '#', '#', '.', '#', '.', '#'],
+           ['#', '.', '.', '.', '#', 'G', '#'],
+           ['#', '#', '#', '#', '#', '#', '#']
+       ]
+      
+       # Player starting position [row, column]
+       self.player_pos = [1, 1]
+      
+       # Goal position
+       self.goal_pos = [5, 5]
+  
+   # Displays the maze and shows player position
+   def display_maze(self):
+       for row_idx, row in enumerate(self.maze):
+           for col_idx, cell in enumerate(row):
+              
+               # If this cell is the player position, print P
+               if [row_idx, col_idx] == self.player_pos:
+                   print('P', end=' ')
+               else:
+                   print(cell, end=' ')
+           print()
+       print()
+  
+   # Moves the player based on input direction
+   def move_player(self, direction):
+       # Copy current position
+       new_pos = self.player_pos.copy()
+      
+       # Change position based on direction
+       if direction == 'w':
+           new_pos[0] -= 1  # Move up
+       elif direction == 's':
+           new_pos[0] += 1  # Move down
+       elif direction == 'a':
+           new_pos[1] -= 1  # Move left
+       elif direction == 'd':
+           new_pos[1] += 1  # Move right
+      
+       # INTENTIONAL BUG 1:
+       # No bounds checking — player can go outside the maze and crash program
+      
+       # Check if the new position is not a wall
+       if self.maze[new_pos[0]][new_pos[1]] != '#':
+           self.player_pos = new_pos
+           return True
+      
+       return False
+  
+   # Checks if player reached the goal
+   def check_victory(self):
+      
+       # INTENTIONAL BUG 2:
+       # Using assignment (=) instead of comparison (==)
+       # This will cause a syntax error
+       if self.player_pos == self.goal_pos:
+           return True
+      
+       return False
+  
+   # Runs the main game loop
+   def play(self):
+       print("Welcome to the Maze Game!")
+       print("Use W/A/S/D to move. Reach 'G' to win!")
+       print()
+      
+       while True:
+           self.display_maze()
+          
+           if self.check_victory():
+               print("Congratulations! You reached the goal!")
+               break
+          
+           move = input("Enter move (W/A/S/D): ").lower()
+          
+           # INTENTIONAL BUG 3:
+           # No input validation — invalid keys still processed
+           self.move_player(move)
+
+
+
+
+# Run the game
+if __name__ == "__main__":
+   game = MazeGame()
+  
+   # INTENTIONAL BUG 4:
+   # Extra period causes syntax error
+   game.play()
+
+
+"My midterm project is a simple Maze Game where the player moves through a maze using W, A, S, and D." 
+"The basic structure is finished, including the maze layout, player movement, and game loop, "
+"but it is not fully working yet. There are several bugs, including a misups with key response, missing boundary checks, "
+"and I believe an extra period at the end of the file that prevents the program from running all the way through. "
+"I still need to add proper boundary checking and input validation. Right now, I am stuck on get the W, A, S, and D keys to always cause a movement."
